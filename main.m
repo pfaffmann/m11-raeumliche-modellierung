@@ -5,11 +5,12 @@
  c = 0.1;
  %Infektionsrate
  infektionsrate=0.3258;
- 
+ %Wechselrate
+ w=(1/14);
  %Zeitvariablen
  tage = 150;
- zeitSchritte = 0.5;
- 
+ delta_t = 0.5;
+ Zeitschritte = floor(tage/delta_t);
  
  %Bevölkerungsmatrix --------- 
  B = getBevDichteMatrix();
@@ -43,19 +44,26 @@ endif
  %Systemmatrix --------- 
 
  A_h = 1*calcSysMatrix(N,M,c,h);
- 
- B_vec = 1*reshape(BInt',N*M,1);
+ spy(A_h)
+ B = 1*reshape(BInt',N*M,1);
  
  %infizierteStartMatrix------------------- 
- LoesungsVector_alt = 1*reshape(getInfizierteStartMatrix(N,M)',N*M,1);
+ u_i_alt = 1*reshape(getInfizierteStartMatrix(N,M)',N*M,1);
+ u_s_alt = B.-u_i_alt; 
  %--------------------------------------------- 
+ LoesungsSpeicherMatrix(:,1) = u_i_alt;
+ LoesungsSpeicherMatrixS(:,1) = u_s_alt;
+ F=@(ui,us,t) (infektionsrate./B).*ui.*us;
  
- F=@(u) (infektionsrate./B_vec).*u.*(B_vec-u);
- 
- for t=1:1:30
+ for t=1:Zeitschritte
    
- LoesungsVector =  LoesungsVector_alt + A_h*LoesungsVector_alt*zeitSchritte + 1*F(infektionsrate,B_vec, LoesungsVector_alt)*zeitSchritte; 
- LoesungsVector_alt = LoesungsVector;
- LoesungsSpeicherMatrix(:,t) = LoesungsVector;  
+ reaktion = F(u_i_alt, u_s_alt,t*delta_t);
+   
+ u_i = u_i_alt + A_h * u_i_alt * delta_t + (reaktion - w .* u_i_alt) * delta_t;  
+ u_s = u_s_alt + A_h * u_s_alt * delta_t - reaktion * delta_t;
+ u_i_alt = u_i;
+ u_s_alt = u_s;
+ LoesungsSpeicherMatrix(:,t+1) = u_i;
+ LoesungsSpeicherMatrixS(:,t+1) = u_s;
 endfor
 

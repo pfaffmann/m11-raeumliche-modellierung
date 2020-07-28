@@ -31,6 +31,6 @@ function infizierteStartMatrix = getInfizierteStartMatrix (N,M)
  X=mitteX-radius:1:mitteX+radius;
  Y=mitteY-radius:1:mitteY+radius;
  infizierteStartMatrix = zeros(M,N);
- infizierteStartMatrix(Y,X) = 0.25;   %Sollte 1 Infizierter auf 1km^2 sein, da 25*100*100m^2 0,25 infiziert sind.
+ infizierteStartMatrix(Y,X) = 0.01;   %Sollte 1 Infizierter auf 1km^2 sein, da 25*100*100m^2 0,25 infiziert sind.
 
 endfunction

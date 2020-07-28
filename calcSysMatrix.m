@@ -65,5 +65,5 @@ function A_h = calcSysMatrix (N,M,c,h)
     A_h((i-1)*N+1:i*N,(i-1)*N+1:(i-0)*N) = B;
     A_h((i-1)*N+1:i*N,(i-0)*N+1:(i+1)*N) = I;
   endfor
-  A_h = (-1*c/(h^2))*A_h;
+  A_h = (1*c/(h^2))*A_h;
 endfunction
