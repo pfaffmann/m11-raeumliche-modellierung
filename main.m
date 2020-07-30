@@ -8,8 +8,8 @@
  %Wechselrate
  w=(1/14);
  %Zeitvariablen
- tage = 150;
- delta_t = 0.5
+ tage = 10;
+ delta_t = 0.01;
  Zeitschritte = floor(tage/delta_t);
  
  %Bev�lkerungsmatrix --------- 
@@ -50,8 +50,8 @@ endif
  u_i_alt = 1*reshape(getInfizierteStartMatrix(N,M)',N*M,1);
  u_s_alt = B.-u_i_alt; 
  %--------------------------------------------- 
- LoesungsSpeicherMatrix(:,1) = u_i_alt;
- LoesungsSpeicherMatrixS(:,1) = u_s_alt;
+ #LoesungsSpeicherMatrix(:,1) = u_i_alt;
+ #LoesungsSpeicherMatrixS(:,1) = u_s_alt;
  F=@(ui,us,t) (infektionsrate./B).*ui.*us;
  
  for t=1:Zeitschritte
@@ -62,8 +62,23 @@ endif
  u_s = u_s_alt + A_h * u_s_alt * delta_t - reaktion * delta_t;
  u_i_alt = u_i;
  u_s_alt = u_s;
- LoesungsSpeicherMatrix(:,t+1) = u_i;
- LoesungsSpeicherMatrixS(:,t+1) = u_s;
+ LoesungsSpeicherMatrix(:,t) = u_i;
+ LoesungsSpeicherMatrixS(:,t) = u_s;
 endfor
 
-gcfvhg=12;
+
+
+figureIndex = floor((1:tage)/delta_t)
+for i=figureIndex
+  LoesungsMatrix = 1*reshape(LoesungsSpeicherMatrix(:,1),N,M);
+  LoesungsMatrix = LoesungsMatrix';
+  figure(i)
+  surface(xi,yi,LoesungsMatrix, "EdgeColor", "none")
+  colormap("jet")
+  colorbar
+  axis([0 sizeX 0 sizeY -1 max(B)])
+  title(["Loesung in t=", num2str(delta_t*i)]);
+  ylabel("y")
+  xlabel(x)
+endfor
+
