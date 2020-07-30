@@ -9,10 +9,10 @@
  w=(1/14);
  %Zeitvariablen
  tage = 150;
- delta_t = 0.5;
+ delta_t = 0.5
  Zeitschritte = floor(tage/delta_t);
  
- %Bevölkerungsmatrix --------- 
+ %Bevï¿½lkerungsmatrix --------- 
  B = getBevDichteMatrix();
  sizeX= size(B)(2); %entspricht xend also x in km
  sizeY= size(B)(1); %entspricht yend also y in km
@@ -44,7 +44,6 @@ endif
  %Systemmatrix --------- 
 
  A_h = 1*calcSysMatrix(N,M,c,h);
- spy(A_h)
  B = 1*reshape(BInt',N*M,1);
  
  %infizierteStartMatrix------------------- 
@@ -67,3 +66,4 @@ endif
  LoesungsSpeicherMatrixS(:,t+1) = u_s;
 endfor
 
+gcfvhg=12;
