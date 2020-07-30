@@ -8,8 +8,8 @@
  %Wechselrate
  w=(1/14);
  %Zeitvariablen
- tage = 150;
- delta_t = 0.5
+ tage = 20;
+ delta_t = 0.005
  Zeitschritte = floor(tage/delta_t);
  
  %Bev�lkerungsmatrix --------- 
