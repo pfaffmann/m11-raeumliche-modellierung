@@ -13,7 +13,7 @@
  w=(1/14);
  
  %Zeitvariablen
- tage = 150;
+ tage = 200;
  delta_t = 0.01;
  Zeitschritte = floor(tage/delta_t);
  
@@ -111,7 +111,7 @@ j=0;
  % colormap: autumn,  hsv jet ocean
   colormap ("jet")
   colorbar 
-  %axis([0 sizeX 0 sizeY -0.001 max(B)])
+  axis([0 sizeX 0 sizeY 0 max(max(LoesungsSpeicherMatrix))*h^2])
   title (["Loesung in t=", num2str(delta_t*i)]);
   ylabel("y")
   xlabel("x")
