@@ -1,0 +1,1 @@
+clear all;close all;c=ones(25,25);bla=calcSysMatrixCNichtKonstant(25,25,c,1);figure(1)spy(bla)
