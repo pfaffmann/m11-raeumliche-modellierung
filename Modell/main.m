@@ -1,0 +1,2 @@
+clear
+B= BevDichteMatrix();
