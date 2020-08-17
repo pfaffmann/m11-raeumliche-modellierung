@@ -11,16 +11,16 @@ StartZeit = cputime;
 Rasterlaenge = 50; % Die Interpolierte Matrix soll eine Rasterlaenge von "Rasterlaenge" Metern haben. Entspricht h * 1000 Metern
 
 % Zeitvariablen
-Tage = 400;
+Tage = 20; %Muss dann erhöht werden.
 delta_t = 0.05;
 Zeitschritte = floor(Tage/delta_t);
 
 % Infektionsvariablen
-BasisErkrankungsrate = 0.205; %Rate der Infektionsverbreitung bei einer Kontaktrate: Wahrscheinlichkeit des Kontakts eines Infizierten mit einem Anfälligen. 
+BasisErkrankungsrate = 0.3852; %Rate der Infektionsverbreitung bei einer Kontaktrate: Wahrscheinlichkeit des Kontakts eines Infizierten mit einem Anfälligen. 
 Wechselrate = (1/14);
 
 % Diffussionsvariablen
-c_0 = 0.01; %Basisdiffusionskoeffzient (gering wählen, da bei BevDichte = 0 dieser Wert genommen wird)
+c_0 = 0.1; %Basisdiffusionskoeffzient (gering wählen, da bei BevDichte = 0 dieser Wert genommen wird)
 %a = 1/10000; % Proportionalitätskonstante des linearen Wachstums (Steigung) (Wird unten automatisch berechnet)
 
 % ------------------------------------------------------------
@@ -31,7 +31,7 @@ B = BevDichteMatrix();
 % ------------------------------------------------------------
 
 % *** Ortsabhängige Diffusionskoeffizientenmatrix ***
-BasisKoeffizientFaktor = 100;
+BasisKoeffizientFaktor = 50;
 a = ((BasisKoeffizientFaktor-1)*c_0)*(1/max(B_Interpoliert(:))); % Der Diffusionskoeffizient ist an der Stelle mit der höchsten Bev Dichte, "BasisKoeffizientFaktor" mal so hoch wie der Basisdiffusionskoeffizient
 C_Linear = LineareDiffusionskoeffizientMatrix(B_Interpoliert,c_0, a);
 %k = 0.5; %Steilheit der Kurve bei nicht linearem Anstieg
@@ -91,7 +91,7 @@ j=0;
   axis([0 N 0 M 0 max(u_i_Speicher(:))*h^2])
   title (["Aktuell Infizierte"]);
   %ylabel("y")
-  xlabel(["Tag: ", num2str(delta_t*i) "\tAktuell Infizierte: " num2str(aktuell_Infizierte) "\tErkrankungsrate: " num2str(Erkrankungsrate_Speicher(1,delta_t*i))])
+  xlabel(["Tag: ", num2str(delta_t*i) "\tAktuell Infizierte: " num2str(aktuell_Infizierte) "\tErkrankungsrate: " num2str(Erkrankungsrate_Speicher(1,i))])
   %Optional: Speicherung der Bilder
   if(true)
     filename=["Images/Aktuell_Infizierte_Tag_" num2str(j) "_von_" num2str(Tage) "_Raster_" num2str(M) "x" num2str(N) "_" num2str(Rasterlaenge) "m" ".jpg"];
