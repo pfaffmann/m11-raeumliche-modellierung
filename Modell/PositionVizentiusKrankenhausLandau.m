@@ -15,21 +15,21 @@
 ## <https://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*- 
-## @deftypefn {} {@var{retval} =} BevDichteMatrix (@var{input1}, @var{input2})
+## @deftypefn {} {@var{retval} =} PositionVizentiusKrankenhausLandau (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
 
 ## Author: chris <chris@PFAFFMANN-PC>
-## Created: 2020-08-15
+## Created: 2020-08-17
 
-function returnMatrix = BevDichteMatrix ()
-returnMatrix=[  
-              2084, 2746, 6583, 2137, 1518;
-               561,  644, 4195, 3867, 2385;
-              1197, 1001, 1543,  636, 2203;];
-              %returnMatrix=[ 329,  262, 1330,    3,    4; 
-              %2084, 2746, 6583, 2137, 1518;
-              % 561,  644, 4195, 3867, 2385;
-              %1197, 1001, 1543,  636, 2203;];
+function [x, y, radius] = PositionVizentiusKrankenhausLandau (B, h)
+ M = rows(B);
+ N = columns(B);
+ x = floor(N/2);
+ y = floor(5*M/16);
+ flaecheKrankenhaus = 0.02; % km^2 = 20.000 m^2 Umrechnung 10^6
+ radiusKrankenhaus = sqrt(flaecheKrankenhaus/pi);
+ %radius = 0.3/h; %radius von 300 Metern
+ radius=radiusKrankenhaus/h;
 endfunction

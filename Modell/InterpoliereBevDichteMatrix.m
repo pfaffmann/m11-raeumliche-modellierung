@@ -31,7 +31,7 @@ function [IntBevMatrix, M, N, h] = InterpoliereBevDichteMatrix (BevMatrix,Raster
 %M=floor(m/hInKm);
 %N=floor(n/hInKm);
 %BInt=interp2(1:n,1:m, B, 1:hInKm:N, 1:hInKm:M);
- close all;
+
  m = rows(BevMatrix);
  n = columns(BevMatrix);
  
@@ -62,8 +62,9 @@ function [IntBevMatrix, M, N, h] = InterpoliereBevDichteMatrix (BevMatrix,Raster
  quotient= sollMenschen/istMenschen;
  IntBevMatrix = quotient*IntBevMatrix;
  
+ 
  if(true)
-   figure(1001)
+   figure(9990)
    surface (xxi,yyi,IntBevMatrix);
    [x,y] = meshgrid (x,y);
    hold on;
@@ -73,5 +74,10 @@ function [IntBevMatrix, M, N, h] = InterpoliereBevDichteMatrix (BevMatrix,Raster
    xlabel("x")
    colorbar
    hold off;
+   if(true)
+      filename=["Images/Bevoelkerungsdichte.jpg"];
+      saveas(9990, filename)
+      close (9990)
+    endif
  endif
 endfunction

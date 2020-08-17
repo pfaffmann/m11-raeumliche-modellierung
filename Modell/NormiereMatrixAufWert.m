@@ -15,21 +15,17 @@
 ## <https://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*- 
-## @deftypefn {} {@var{retval} =} BevDichteMatrix (@var{input1}, @var{input2})
+## @deftypefn {} {@var{retval} =} NormiereMatrixAufEins (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
 
 ## Author: chris <chris@PFAFFMANN-PC>
-## Created: 2020-08-15
+## Created: 2020-08-16
 
-function returnMatrix = BevDichteMatrix ()
-returnMatrix=[  
-              2084, 2746, 6583, 2137, 1518;
-               561,  644, 4195, 3867, 2385;
-              1197, 1001, 1543,  636, 2203;];
-              %returnMatrix=[ 329,  262, 1330,    3,    4; 
-              %2084, 2746, 6583, 2137, 1518;
-              % 561,  644, 4195, 3867, 2385;
-              %1197, 1001, 1543,  636, 2203;];
+## Quelle: https://www.gomatlab.de/matrix-auf-bestimmten-wert-normieren-t39192.html
+function Mat_Normiert = NormiereMatrixAufWert (Mat, Wert)
+  minValue = min(Mat(:));
+  maxValue = max(Mat(:));
+  Mat_Normiert = Wert / (maxValue - minValue) * (Mat - minValue);
 endfunction

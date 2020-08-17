@@ -15,21 +15,29 @@
 ## <https://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*- 
-## @deftypefn {} {@var{retval} =} BevDichteMatrix (@var{input1}, @var{input2})
+## @deftypefn {} {@var{retval} =} NichtLineareDiffusionskoeffizientMatrix (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
 
 ## Author: chris <chris@PFAFFMANN-PC>
-## Created: 2020-08-15
+## Created: 2020-08-16
 
-function returnMatrix = BevDichteMatrix ()
-returnMatrix=[  
-              2084, 2746, 6583, 2137, 1518;
-               561,  644, 4195, 3867, 2385;
-              1197, 1001, 1543,  636, 2203;];
-              %returnMatrix=[ 329,  262, 1330,    3,    4; 
-              %2084, 2746, 6583, 2137, 1518;
-              % 561,  644, 4195, 3867, 2385;
-              %1197, 1001, 1543,  636, 2203;];
+function C = NichtLineareDiffusionskoeffizientMatrix (B, c_0 , k)
+ C = atan(k.*B-k/2) + atan(k/2) +c_0;
+ %C = NullenAmMatrixRand(C);
+ 
+ if(false)
+   figure(9992)
+   surface (C);
+   title (["Nicht Lineare Diffusionskoeffizient Matrix c_0 = " num2str(c_0) "   k = " num2str(k)]);
+   ylabel("y")
+   xlabel("x")
+   colorbar
+   if(false)
+      filename=["Images/Nicht_Lineare_Diffusionskoeffizient_ Matrix_ c0_" num2str(c_0) "_k_" num2str(k) ".jpg"];
+      saveas(9992, filename)
+      close (9992)
+    endif
+  endif
 endfunction
