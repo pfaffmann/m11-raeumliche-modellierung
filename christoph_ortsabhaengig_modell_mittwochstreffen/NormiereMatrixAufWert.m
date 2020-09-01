@@ -15,7 +15,7 @@
 ## <https://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*- 
-## @deftypefn {} {@var{retval} =} NichtLineareDiffusionskoeffizientMatrix (@var{input1}, @var{input2})
+## @deftypefn {} {@var{retval} =} NormiereMatrixAufEins (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
@@ -23,23 +23,9 @@
 ## Author: chris <chris@PFAFFMANN-PC>
 ## Created: 2020-08-16
 
-function C = NichtLineareDiffusionskoeffizientMatrix (B, c_0 , k)
- B = NormiereMatrixAufWert(B,1);
- C = atan(k.*B-k/2) + atan(k/2) +c_0;
- C=C/1000;
- %C = NullenAmMatrixRand(C);
- 
- if(true)
-   figure(9992)
-   surface (C);
-   title (["Nicht Lineare Diffusionskoeffizient Matrix c_0 = " num2str(c_0) "   k = " num2str(k)]);
-   ylabel("y")
-   xlabel("x")
-   colorbar
-   if(false)
-      filename=["Images/Nicht_Lineare_Diffusionskoeffizient_ Matrix_ c0_" num2str(c_0) "_k_" num2str(k) ".jpg"];
-      saveas(9992, filename)
-      close (9992)
-    endif
-  endif
+## Quelle: https://www.gomatlab.de/matrix-auf-bestimmten-wert-normieren-t39192.html
+function Mat_Normiert = NormiereMatrixAufWert (Mat, Wert)
+  minValue = min(Mat(:));
+  maxValue = max(Mat(:));
+  Mat_Normiert = Wert / (maxValue - minValue) * (Mat - minValue);
 endfunction

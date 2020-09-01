@@ -36,13 +36,13 @@ function [IntBevMatrix, M, N, h] = InterpoliereBevDichteMatrix (BevMatrix,Raster
  n = columns(BevMatrix);
  
  h = RasterlaengeInMetern/1000; %Schrittweite in km.
- AnzahlPunkteProKilometer = floor(1/h);
+ AnzahlRasterProKilometer = floor(1/h);
  
- M = m * AnzahlPunkteProKilometer;
- N = n * AnzahlPunkteProKilometer;
+ M = m * AnzahlRasterProKilometer;
+ N = n * AnzahlRasterProKilometer;
  
- hilfsM = M-AnzahlPunkteProKilometer;
- hilfsN = N-AnzahlPunkteProKilometer;
+ hilfsM = M-AnzahlRasterProKilometer;
+ hilfsN = N-AnzahlRasterProKilometer;
  
  x = 0.5:1:n-0.5;
  y = 0.5:1:m-0.5;
@@ -57,8 +57,8 @@ function [IntBevMatrix, M, N, h] = InterpoliereBevDichteMatrix (BevMatrix,Raster
  IntBevMatrix = griddata(xi,yi,hilfsBevMatrix,xxi,yyi,"nearest"); %Extrapolation 
  
  %Normieren damit nicht auf einmal mehr Einwohner entstehen
- sollMenschen = sum(BevMatrix(:))*1^2; % 1^2 da die Fläche ein Kilometer^2 ist.
- istMenschen = sum(IntBevMatrix(:))*h^2;
+ sollMenschen = sum(sum(BevMatrix))*1^2; % 1^2 da die Fläche ein Kilometer^2 ist.
+ istMenschen = sum(sum(IntBevMatrix))*h^2;
  quotient= sollMenschen/istMenschen;
  IntBevMatrix = quotient*IntBevMatrix;
  

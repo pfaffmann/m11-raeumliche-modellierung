@@ -57,8 +57,7 @@ function I = InfizierteStartbedingungMatrix (B,h, StartWerte)
  istInfizierte = sum(I(:));
  quotient= sollInfizierte/istInfizierte;
  I = quotient*I/h^2;
- %I = quotient*I;
- 
+
   if(true)
    figure(9995)
    surface (I);

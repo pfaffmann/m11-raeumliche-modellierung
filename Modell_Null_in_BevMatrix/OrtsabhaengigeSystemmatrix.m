@@ -99,8 +99,6 @@ for j=2:M-1 %Anzahl der Blockzeilen
   A_h((Blockzeile-1)*N+1:(Blockzeile*N),(Blockspalte-1)*N+1:(Blockspalte*N))=B;
   % ------------------------------------------------------------
 endfor
-A_h=-1/(h^2*1000)*A_h;
-
  
  if(false)
   figure(9994)

@@ -35,7 +35,7 @@ function C = LineareDiffusionskoeffizientMatrix (B, c_0, a)
    ylabel("y")
    xlabel("x")
    colorbar
-   if(true)
+   if(false)
       filename=["Images/Lineare_Diffusionskoeffizient_ Matrix_ c0_" num2str(c_0) "_a_" num2str(a) ".jpg"];
       saveas(9991, filename)
       close (9991)

@@ -15,7 +15,7 @@
 ## <https://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*- 
-## @deftypefn {} {@var{retval} =} NichtLineareDiffusionskoeffizientMatrix (@var{input1}, @var{input2})
+## @deftypefn {} {@var{retval} =} StueckweiseStetigeDiffusionskoeffizientMatrix (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
@@ -23,23 +23,24 @@
 ## Author: chris <chris@PFAFFMANN-PC>
 ## Created: 2020-08-16
 
-function C = NichtLineareDiffusionskoeffizientMatrix (B, c_0 , k)
- B = NormiereMatrixAufWert(B,1);
- C = atan(k.*B-k/2) + atan(k/2) +c_0;
- C=C/1000;
- %C = NullenAmMatrixRand(C);
- 
- if(true)
-   figure(9992)
+function C = StueckweiseStetigeDiffusionskoeffizientMatrix (B, c_0 , c_1, B_0)
+  %B_0 ist der Grenzwert, alle Matrizenwerte kleiner gleich B_0 werden mit c_0 faktorisiert, der Rest mit c_1
+  C=B;
+  C(C<=B_0)=c_0*C(C<=B_0);
+  C(C>B_0)=c_1*C(C>B_0);
+  %C = NullenAmMatrixRand(C);
+  
+  if(false)
+   figure(9993)
    surface (C);
-   title (["Nicht Lineare Diffusionskoeffizient Matrix c_0 = " num2str(c_0) "   k = " num2str(k)]);
+   title (["Stueckweise stetige Diffusionskoeffizient Matrix c_0 = " num2str(c_0) "   c_1 = " num2str(c_1) "   Grenzwert = " num2str(B_0)]);
    ylabel("y")
    xlabel("x")
    colorbar
-   if(false)
-      filename=["Images/Nicht_Lineare_Diffusionskoeffizient_ Matrix_ c0_" num2str(c_0) "_k_" num2str(k) ".jpg"];
-      saveas(9992, filename)
-      close (9992)
-    endif
   endif
+  if(false)
+      filename=["Images/Stueckweise_stetige_Diffusionskoeffizient_ Matrix_ c0_" num2str(c_0) "_c1_" num2str(c_1) "_Grenzwert_" num2str(B_0) ".jpg"];
+      saveas(9993, filename)
+      close (9993)
+    endif
 endfunction

@@ -15,7 +15,7 @@
 ## <https://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*- 
-## @deftypefn {} {@var{retval} =} PositionVizentiusKrankenhausLandau (@var{input1}, @var{input2})
+## @deftypefn {} {@var{retval} =} RechenZeit (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
@@ -23,13 +23,27 @@
 ## Author: chris <chris@PFAFFMANN-PC>
 ## Created: 2020-08-17
 
-function [x, y, radius] = PositionVizentiusKrankenhausLandau (B, h)
- M = rows(B);
- N = columns(B);
- x = floor(N/2);
- y = floor(7*M/32);
- flaecheKrankenhaus = 0.02; % km^2 = 20.000 m^2 Umrechnung 10^6
- radiusKrankenhaus = sqrt(flaecheKrankenhaus/pi);
- %radius = 0.3/h; %radius von 300 Metern
- radius=radiusKrankenhaus/h;
+function strZeit = RechenZeit (EndZeit)
+  %Endzeit ist die Zeitdifferenz von cputime zu StartZeit.
+  Hundertstelsekunden= num2str(round((EndZeit - floor(EndZeit))*100));
+  EndZeit = floor(EndZeit);
+  Stunden= floor(EndZeit/3600);
+  Minuten= floor((EndZeit-(Stunden*3600))/60);
+  Sekunden= EndZeit-(Stunden*3600)-(Minuten*60);
+  if(Stunden < 10)
+    Stunden = ["0" num2str(Stunden)];
+  else
+    Stunden = num2str(Stunden);
+  endif
+  if(Minuten < 10)
+    Minuten = ["0" num2str(Minuten)];
+  else
+    Minuten = num2str(Minuten);
+  endif
+  if(Sekunden < 10)
+    Sekunden = ["0" num2str(Sekunden)];
+  else
+    Sekunden = num2str(Sekunden);
+  endif
+  strZeit = [Stunden ":" Minuten ":" Sekunden "." Hundertstelsekunden];
 endfunction

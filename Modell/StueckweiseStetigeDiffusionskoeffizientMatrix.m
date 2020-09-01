@@ -26,11 +26,11 @@
 function C = StueckweiseStetigeDiffusionskoeffizientMatrix (B, c_0 , c_1, B_0)
   %B_0 ist der Grenzwert, alle Matrizenwerte kleiner gleich B_0 werden mit c_0 faktorisiert, der Rest mit c_1
   C=B;
-  C(C<=B_0)=c_0*C(C<=B_0);
-  C(C>B_0)=c_1*C(C>B_0);
+  C(B<=B_0)=c_0;
+  C(C>B_0)=c_1;
   %C = NullenAmMatrixRand(C);
   
-  if(false)
+  if(true)
    figure(9993)
    surface (C);
    title (["Stueckweise stetige Diffusionskoeffizient Matrix c_0 = " num2str(c_0) "   c_1 = " num2str(c_1) "   Grenzwert = " num2str(B_0)]);

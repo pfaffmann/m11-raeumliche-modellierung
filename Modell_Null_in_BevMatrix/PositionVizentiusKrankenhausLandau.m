@@ -15,31 +15,21 @@
 ## <https://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*- 
-## @deftypefn {} {@var{retval} =} NichtLineareDiffusionskoeffizientMatrix (@var{input1}, @var{input2})
+## @deftypefn {} {@var{retval} =} PositionVizentiusKrankenhausLandau (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
 
 ## Author: chris <chris@PFAFFMANN-PC>
-## Created: 2020-08-16
+## Created: 2020-08-17
 
-function C = NichtLineareDiffusionskoeffizientMatrix (B, c_0 , k)
- B = NormiereMatrixAufWert(B,1);
- C = atan(k.*B-k/2) + atan(k/2) +c_0;
- C=C/1000;
- %C = NullenAmMatrixRand(C);
- 
- if(true)
-   figure(9992)
-   surface (C);
-   title (["Nicht Lineare Diffusionskoeffizient Matrix c_0 = " num2str(c_0) "   k = " num2str(k)]);
-   ylabel("y")
-   xlabel("x")
-   colorbar
-   if(false)
-      filename=["Images/Nicht_Lineare_Diffusionskoeffizient_ Matrix_ c0_" num2str(c_0) "_k_" num2str(k) ".jpg"];
-      saveas(9992, filename)
-      close (9992)
-    endif
-  endif
+function [x, y, radius] = PositionVizentiusKrankenhausLandau (B, h)
+ M = rows(B);
+ N = columns(B);
+ x = floor(N/2);
+ y = floor(5*M/16);
+ flaecheKrankenhaus = 0.02; % km^2 = 20.000 m^2 Umrechnung 10^6
+ radiusKrankenhaus = sqrt(flaecheKrankenhaus/pi);
+ %radius = 0.3/h; %radius von 300 Metern
+ radius=radiusKrankenhaus/h;
 endfunction

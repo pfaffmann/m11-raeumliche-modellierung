@@ -24,12 +24,10 @@
 ## Created: 2020-08-16
 
 function C = NichtLineareDiffusionskoeffizientMatrix (B, c_0 , k)
- B = NormiereMatrixAufWert(B,1);
  C = atan(k.*B-k/2) + atan(k/2) +c_0;
- C=C/1000;
  %C = NullenAmMatrixRand(C);
  
- if(true)
+ if(false)
    figure(9992)
    surface (C);
    title (["Nicht Lineare Diffusionskoeffizient Matrix c_0 = " num2str(c_0) "   k = " num2str(k)]);

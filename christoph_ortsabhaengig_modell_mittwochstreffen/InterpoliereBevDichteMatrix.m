@@ -41,8 +41,8 @@ function [IntBevMatrix, M, N, h] = InterpoliereBevDichteMatrix (BevMatrix,Raster
  M = m * AnzahlPunkteProKilometer;
  N = n * AnzahlPunkteProKilometer;
  
- hilfsM = M-AnzahlPunkteProKilometer;
- hilfsN = N-AnzahlPunkteProKilometer;
+ hilfsM = M-AnzahlRasterProKilometer;
+ hilfsN = N-AnzahlRasterProKilometer;
  
  x = 0.5:1:n-0.5;
  y = 0.5:1:m-0.5;

@@ -8,19 +8,19 @@ StartZeit = cputime;
 % *** INPUT ***
 
 %Raumvariablen
-Rasterlaenge = 100; % Die Interpolierte Matrix soll eine Rasterlaenge von "Rasterlaenge" Metern haben. Entspricht h * 1000 Metern
+Rasterlaenge = 50; % Die Interpolierte Matrix soll eine Rasterlaenge von "Rasterlaenge" Metern haben. Entspricht h * 1000 Metern
 
 % Zeitvariablen
-Tage = 1; %Muss dann erhöht werden.
+Tage = 200; %Muss dann erhöht werden.
 delta_t = 0.05;
 Zeitschritte = floor(Tage/delta_t);
 
 % Infektionsvariablen
-BasisErkrankungsrate = 0.3852; %Rate der Infektionsverbreitung
+BasisErkrankungsrate = 0.3852; %Rate der Infektionsverbreitung bei einer Kontaktrate: Wahrscheinlichkeit des Kontakts eines Infizierten mit einem Anfälligen. 
 Wechselrate = (1/14);
 
 % Diffussionsvariablen
-c_0 = 0.01/1000; %Basisdiffusionskoeffzient (gering wählen, da bei BevDichte = 0 dieser Wert genommen wird)
+c_0 = 0.01; %Basisdiffusionskoeffzient (gering wählen, da bei BevDichte = 0 dieser Wert genommen wird)
 %a = 1/10000; % Proportionalitätskonstante des linearen Wachstums (Steigung) (Wird unten automatisch berechnet)
 
 % ------------------------------------------------------------
@@ -28,27 +28,29 @@ c_0 = 0.01/1000; %Basisdiffusionskoeffzient (gering wählen, da bei BevDichte = 0
 % *** Bevoelkerungsmatrix ***
 B = BevDichteMatrix();
 [B_Interpoliert, M, N, h] = InterpoliereBevDichteMatrix(B, Rasterlaenge);
-
 % ------------------------------------------------------------
 
 % *** Ortsabhängige Diffusionskoeffizientenmatrix ***
-BasisKoeffizientFaktor = 50;
+BasisKoeffizientFaktor = 500;
 a = ((BasisKoeffizientFaktor-1)*c_0)*(1/max(B_Interpoliert(:))); % Der Diffusionskoeffizient ist an der Stelle mit der höchsten Bev Dichte, "BasisKoeffizientFaktor" mal so hoch wie der Basisdiffusionskoeffizient
 C_Linear = LineareDiffusionskoeffizientMatrix(B_Interpoliert,c_0, a);
-k =5; %Steilheit der Kurve bei nicht linearem Anstieg
-C_NichtLinear = NichtLineareDiffusionskoeffizientMatrix(B_Interpoliert,c_0, k);
-C_StueckweiseStetig = StueckweiseStetigeDiffusionskoeffizientMatrix(B_Interpoliert,c_0, 100*c_0,1000);
+%k = 0.5; %Steilheit der Kurve bei nicht linearem Anstieg
+%C_NichtLinear = NichtLineareDiffusionskoeffizientMatrix(B_Interpoliert,c_0, k);
+%C_StueckweiseStetig = StueckweiseStetigeDiffusionskoeffizientMatrix(B_Interpoliert,c_0, c_1,1000);
 % ------------------------------------------------------------
 
 % *** Systemmatrix für ortsabhängigen Diffusionskoeffizienten ***
 % Achtung Diffusionskoeffizient c (bzw. a) nicht gleich der Infektionsrate (Erkrankungsrate) c
-A_h = OrtsabhaengigeSystemmatrix(M,N,h, C_StueckweiseStetig);
+A_h = OrtsabhaengigeSystemmatrix(M,N,h, C_Linear);
 % ------------------------------------------------------------
 
 % *** Matrix mit den Startbedingungen der Infektion ***
-[x_KH,y_KH,r_KH] = PositionVizentiusKrankenhausLandau(B_Interpoliert, h)
+[x_KH,y_KH,r_KH] = PositionVizentiusKrankenhausLandau(B_Interpoliert, h);
+x_KH = 70; 
+y_KH = 70;
+r_KH = 2.5;  
 InfizierteStartAnzahl = 1;
-InfizierteStartMatrix = InfizierteStartbedingungMatrix(B_Interpoliert, h, [x_KH, y_KH, r_KH, InfizierteStartAnzahl]);
+InfizierteStartMatrix = InfizierteStartbedingungMatrix(B_Interpoliert, h, [x_KH, y_KH, r_KH, InfizierteStartAnzahl;10 40 4 2]);
 clear *_KH; %Alle Variablen die mit _KH enden werden gelöscht, da nicht mehr benötigt.
 % ------------------------------------------------------------
 
@@ -62,8 +64,8 @@ u_s_alt = B.-u_i_alt;
 for t=1:Zeitschritte
   Erkrankungsrate = slowdown(t*delta_t) * BasisErkrankungsrate;
   
-  u_i = u_i_alt + delta_t * (-1*A_h * u_i_alt + F_I(Erkrankungsrate, B, Wechselrate, u_i_alt, u_s_alt));
-  u_s = u_s_alt + delta_t * (-1*A_h * u_s_alt + F_S(Erkrankungsrate, B, Wechselrate, u_i_alt, u_s_alt));
+  u_i = u_i_alt + delta_t * (A_h * u_i_alt + F_I(Erkrankungsrate, B, Wechselrate, u_i_alt, u_s_alt));
+  u_s = u_s_alt + delta_t * (A_h * u_s_alt + F_S(Erkrankungsrate, B, Wechselrate, u_i_alt, u_s_alt));
   
   u_i_alt = u_i;
   u_s_alt = u_s;
@@ -94,10 +96,10 @@ j=0;
   %ylabel("y")
   xlabel(["Tag: ", num2str(delta_t*i) "\tAktuell Infizierte: " num2str(aktuell_Infizierte) "\tErkrankungsrate: " num2str(Erkrankungsrate_Speicher(1,i))])
   %Optional: Speicherung der Bilder
-  if(false)
-    filename=["Images/Aktuell_Infizierte_Tag_" num2str(j) "_von_" num2str(Tage) "_Raster_" num2str(M) "x" num2str(N) "_" num2str(Rasterlaenge) "m" ".jpg"];
+  if(true)
+    filename=["Images/Aktuell_Infizierte_Tage_" num2str(Tage) "_Tag_" num2str(delta_t*i) "_Raster_" num2str(M) "x" num2str(N) "_" num2str(Rasterlaenge) "m" ".jpg"];
     saveas(j, filename)
-    close (j)
+    %close (j)
   endif
 endfor
 % ------------------------------------------------------------
@@ -108,5 +110,5 @@ disp(["Benoetigte Rechenzeit: " Zeit]);
 % ------------------------------------------------------------
 
 % *** Alles abspeichern ***
-%save(["Arbeitsumgebung/Aktuelle_Infizierte_" num2str(floor(StartZeit)) "_" num2str(Tage) "_Tage_Raster_" num2str(M) "x" num2str(N) "_" num2str(Rasterlaenge) "m.mat" ])
+save(["Arbeitsumgebung/Aktuelle_Infizierte_" num2str(floor(StartZeit)) "_" num2str(Tage) "_Tage_Raster_" num2str(M) "x" num2str(N) "_" num2str(Rasterlaenge) "m.mat" ])
 % ------------------------------------------------------------

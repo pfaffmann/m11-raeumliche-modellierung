@@ -15,31 +15,16 @@
 ## <https://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*- 
-## @deftypefn {} {@var{retval} =} NichtLineareDiffusionskoeffizientMatrix (@var{input1}, @var{input2})
+## @deftypefn {} {@var{retval} =} F_I (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
 
 ## Author: chris <chris@PFAFFMANN-PC>
-## Created: 2020-08-16
+## Created: 2020-08-17
 
-function C = NichtLineareDiffusionskoeffizientMatrix (B, c_0 , k)
- B = NormiereMatrixAufWert(B,1);
- C = atan(k.*B-k/2) + atan(k/2) +c_0;
- C=C/1000;
- %C = NullenAmMatrixRand(C);
- 
- if(true)
-   figure(9992)
-   surface (C);
-   title (["Nicht Lineare Diffusionskoeffizient Matrix c_0 = " num2str(c_0) "   k = " num2str(k)]);
-   ylabel("y")
-   xlabel("x")
-   colorbar
-   if(false)
-      filename=["Images/Nicht_Lineare_Diffusionskoeffizient_ Matrix_ c0_" num2str(c_0) "_k_" num2str(k) ".jpg"];
-      saveas(9992, filename)
-      close (9992)
-    endif
-  endif
+function F = F_I (Erkrankungsrate, B, Wechselrate, ui, us)
+  F = (Erkrankungsrate./B);
+  F(F==Inf) = 0; %Falls B an Punkten 0 ist, dann setze hier F auf 0
+  F = F.*ui.*us-Wechselrate*ui;
 endfunction

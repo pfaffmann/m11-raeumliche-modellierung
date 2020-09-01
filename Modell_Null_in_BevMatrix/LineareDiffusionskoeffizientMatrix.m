@@ -15,7 +15,7 @@
 ## <https://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*- 
-## @deftypefn {} {@var{retval} =} NichtLineareDiffusionskoeffizientMatrix (@var{input1}, @var{input2})
+## @deftypefn {} {@var{retval} =} LineareDiffusionskoeffizientMatrix (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
@@ -23,23 +23,23 @@
 ## Author: chris <chris@PFAFFMANN-PC>
 ## Created: 2020-08-16
 
-function C = NichtLineareDiffusionskoeffizientMatrix (B, c_0 , k)
- B = NormiereMatrixAufWert(B,1);
- C = atan(k.*B-k/2) + atan(k/2) +c_0;
- C=C/1000;
- %C = NullenAmMatrixRand(C);
- 
- if(true)
-   figure(9992)
+function C = LineareDiffusionskoeffizientMatrix (B, c_0, a)
+  C = c_0 .+ a.*B;
+  %C(B<=0)=0; %Verbreitung 0 falls keine BevDichte an dieser Stelle
+  %C = NullenAmMatrixRand(C);
+  
+  if(true)
+   figure(9991)
    surface (C);
-   title (["Nicht Lineare Diffusionskoeffizient Matrix c_0 = " num2str(c_0) "   k = " num2str(k)]);
+   title (["Lineare Diffusionskoeffizient Matrix c_0 = " num2str(c_0) "   a = " num2str(a)]);
    ylabel("y")
    xlabel("x")
    colorbar
-   if(false)
-      filename=["Images/Nicht_Lineare_Diffusionskoeffizient_ Matrix_ c0_" num2str(c_0) "_k_" num2str(k) ".jpg"];
-      saveas(9992, filename)
-      close (9992)
+   if(true)
+      filename=["Images/Lineare_Diffusionskoeffizient_ Matrix_ c0_" num2str(c_0) "_a_" num2str(a) ".jpg"];
+      saveas(9991, filename)
+      close (9991)
     endif
   endif
+  
 endfunction
